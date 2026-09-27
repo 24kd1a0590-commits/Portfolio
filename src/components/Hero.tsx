@@ -1,8 +1,10 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRight, Github, Linkedin, MousePointerClick } from 'lucide-react';
+import { ArrowRight, Github, Linkedin } from 'lucide-react';
 import { profile } from '@/data/portfolio';
+import { useCursorGlow } from '@/hooks/useInteractions';
 import HeroVisual from './HeroVisual';
+import MagneticButton from './MagneticButton';
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -11,17 +13,29 @@ export default function Hero() {
     offset: ['start start', 'end start'],
   });
 
+  const cursor = useCursorGlow();
+
+  // Parallax / scroll transforms
   const yText = useTransform(scrollYProgress, [0, 1], [0, -80]);
   const opacityText = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
   const yVisual = useTransform(scrollYProgress, [0, 1], [0, -40]);
   const scaleVisual = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+  const rotateX = useTransform(scrollYProgress, [0, 1], [0, 15]);
+  const rotateY = useTransform(scrollYProgress, [0, 1], [0, -10]);
   const bgY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+
+  // Cursor-reactive lighting position
+  const glowX = useSpring(cursor.x * 100, { stiffness: 60, damping: 20 });
+  const glowY = useSpring(cursor.y * 100, { stiffness: 60, damping: 20 });
+
+  // 3D tilt for visual based on cursor
+  const visualRotateX = useSpring((cursor.y - 0.5) * -10, { stiffness: 50, damping: 20 });
+  const visualRotateY = useSpring((cursor.x - 0.5) * 10, { stiffness: 50, damping: 20 });
 
   const container = {
     hidden: {},
-    show: {
-      transition: { staggerChildren: 0.12, delayChildren: 0.3 },
-    },
+    show: { transition: { staggerChildren: 0.12, delayChildren: 0.3 } },
   };
   const item = {
     hidden: { opacity: 0, y: 24 },
@@ -30,8 +44,20 @@ export default function Hero() {
 
   return (
     <section ref={ref} id="hero" className="relative min-h-screen flex items-center overflow-hidden pt-20">
+      {/* Cursor-reactive background lighting */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: useTransform(
+            [glowX, glowY],
+            (latest) =>
+              `radial-gradient(600px circle at ${latest[0]}% ${latest[1]}%, rgba(99,102,241,0.08), transparent 70%)`
+          ),
+        }}
+      />
+
       {/* Background layers */}
-      <motion.div style={{ y: bgY }} className="absolute inset-0 pointer-events-none">
+      <motion.div style={{ y: bgY, opacity: bgOpacity }} className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 grid-pattern opacity-40" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] radial-glow opacity-60" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[400px] bg-gradient-to-tr from-indigo-900/10 to-transparent rounded-full blur-3xl" />
@@ -64,21 +90,21 @@ export default function Hero() {
             </motion.p>
 
             <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">
-              <button
+              <MagneticButton
+                variant="primary"
                 onClick={() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="btn-primary group"
               >
                 View My Work
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-              <a href={profile.github} target="_blank" rel="noreferrer" className="btn-ghost group">
+              </MagneticButton>
+              <MagneticButton variant="ghost" href={profile.github} target="_blank" rel="noreferrer" ariaLabel="GitHub">
                 <Github size={16} />
                 GitHub
-              </a>
-              <a href={profile.linkedin} target="_blank" rel="noreferrer" className="btn-ghost group">
+              </MagneticButton>
+              <MagneticButton variant="ghost" href={profile.linkedin} target="_blank" rel="noreferrer" ariaLabel="LinkedIn">
                 <Linkedin size={16} />
                 LinkedIn
-              </a>
+              </MagneticButton>
             </motion.div>
 
             <motion.div variants={item} className="mt-8 flex items-center gap-2 text-sm text-gray-500">
@@ -87,9 +113,17 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right visual */}
-          <motion.div style={{ y: yVisual, scale: scaleVisual }} className="relative">
-            <HeroVisual />
+          {/* Right visual with 3D tilt + scroll parallax */}
+          <motion.div
+            style={{ y: yVisual, scale: scaleVisual, rotateX, rotateY }}
+            className="relative [perspective:1000px]"
+          >
+            <motion.div
+              style={{ rotateX: visualRotateX, rotateY: visualRotateY, transformStyle: 'preserve-3d' }}
+              className="relative will-change-transform"
+            >
+              <HeroVisual />
+            </motion.div>
           </motion.div>
         </div>
       </div>

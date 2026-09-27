@@ -10,6 +10,7 @@ import Certifications from '@/components/Certifications';
 import Education from '@/components/Education';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import SectionDivider from '@/components/SectionDivider';
 
 function App() {
   return (
@@ -17,14 +18,22 @@ function App() {
       <Navbar />
       <main>
         <Hero />
+        <SectionDivider variant="gradient" />
         <Stats />
         <About />
+        <SectionDivider variant="dots" />
         <Skills />
+        <SectionDivider variant="gradient" />
         <Projects />
+        <SectionDivider variant="dots" />
         <ProblemSolving />
+        <SectionDivider variant="line" />
         <Achievements />
+        <SectionDivider variant="dots" />
         <Certifications />
+        <SectionDivider variant="line" />
         <Education />
+        <SectionDivider variant="gradient" />
         <Contact />
       </main>
       <Footer />

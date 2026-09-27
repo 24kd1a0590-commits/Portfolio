@@ -8,11 +8,12 @@ import {
   Cpu,
   BarChart3,
   ExternalLink,
+  type LucideIcon,
 } from 'lucide-react';
 import { certifications } from '@/data/portfolio';
 import { useInView } from '@/hooks/useScroll';
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const iconMap: Record<string, LucideIcon> = {
   Layers,
   BrainCircuit,
   Cloud,

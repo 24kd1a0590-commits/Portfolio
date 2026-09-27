@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from 'framer-motion';
+import { useRef, useState } from 'react';
 import { MapPin, TrendingUp, Trophy, Wallet } from 'lucide-react';
 
 export default function TravelMateVisual() {
@@ -101,30 +101,7 @@ export default function TravelMateVisual() {
           style={{ opacity: markerOpacity }}
           className="absolute"
         >
-          <svg viewBox="0 0 400 300" className="absolute inset-0 w-full h-full">
-            <motion.circle
-              r="5"
-              fill="#06b6d4"
-              style={{
-                cx: useTransform(routeProgress, (v) => {
-                  const idx = v * (routePoints.length - 1);
-                  const i = Math.floor(idx);
-                  const f = idx - i;
-                  const p1 = routePoints[Math.min(i, routePoints.length - 1)];
-                  const p2 = routePoints[Math.min(i + 1, routePoints.length - 1)];
-                  return p1.x + (p2.x - p1.x) * f;
-                }),
-                cy: useTransform(routeProgress, (v) => {
-                  const idx = v * (routePoints.length - 1);
-                  const i = Math.floor(idx);
-                  const f = idx - i;
-                  const p1 = routePoints[Math.min(i, routePoints.length - 1)];
-                  const p2 = routePoints[Math.min(i + 1, routePoints.length - 1)];
-                  return p1.y + (p2.y - p1.y) * f;
-                }),
-              }}
-            />
-          </svg>
+          <MovingMarker routeProgress={routeProgress} routePoints={routePoints} />
         </motion.div>
 
         {/* Header bar */}
@@ -210,5 +187,24 @@ export default function TravelMateVisual() {
         </motion.div>
       </motion.div>
     </div>
+  );
+}
+
+function MovingMarker({ routeProgress, routePoints }: { routeProgress: MotionValue<number>; routePoints: { x: number; y: number }[] }) {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  useMotionValueEvent(routeProgress, 'change', (v) => {
+    const idx = v * (routePoints.length - 1);
+    const i = Math.floor(idx);
+    const f = idx - i;
+    const p1 = routePoints[Math.min(i, routePoints.length - 1)];
+    const p2 = routePoints[Math.min(i + 1, routePoints.length - 1)];
+    setPos({ x: p1.x + (p2.x - p1.x) * f, y: p1.y + (p2.y - p1.y) * f });
+  });
+
+  return (
+    <svg viewBox="0 0 400 300" className="absolute inset-0 w-full h-full">
+      <circle cx={pos.x} cy={pos.y} r="5" fill="#06b6d4" />
+    </svg>
   );
 }

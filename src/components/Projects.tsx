@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ArrowRight, X, Github, CheckCircle2, Trophy, Layers } from 'lucide-react';
 import { projects, type Project } from '@/data/portfolio';
 import { useInView } from '@/hooks/useScroll';
+import { useTilt } from '@/hooks/useInteractions';
 import TravelMateVisual from './visuals/TravelMateVisual';
 import RouteNovaVisual from './visuals/RouteNovaVisual';
 import MediQVisual from './visuals/MediQVisual';
@@ -12,6 +13,33 @@ const visuals: Record<Project['visual'], React.ComponentType> = {
   routenova: RouteNovaVisual,
   mediq: MediQVisual,
 };
+
+function TiltCard({ children, accent }: { children: React.ReactNode; accent: string }) {
+  const { ref, tilt, glow, onMouseMove, onMouseLeave } = useTilt<HTMLDivElement>(6);
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+        transformStyle: 'preserve-3d',
+      }}
+      className="relative will-change-transform transition-transform duration-200 ease-out"
+    >
+      {/* Cursor-following light */}
+      <div
+        className="absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-300 z-30"
+        style={{
+          background: `radial-gradient(300px circle at ${glow.x}% ${glow.y}%, ${accent}15, transparent 70%)`,
+          opacity: glow.active ? 1 : 0,
+        }}
+      />
+      {children}
+    </div>
+  );
+}
 
 export default function Projects() {
   const { ref, inView } = useInView<HTMLDivElement>();
@@ -68,7 +96,7 @@ export default function Projects() {
                 </motion.div>
 
                 <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${isReversed ? 'lg:[direction:rtl]' : ''}`}>
-                  {/* Visual */}
+                  {/* Visual with 3D tilt + cursor lighting */}
                   <motion.div
                     initial={{ opacity: 0, x: isReversed ? 40 : -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -78,7 +106,9 @@ export default function Projects() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-cyan-500/5 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="relative">
-                      <Visual />
+                      <TiltCard accent={project.accent}>
+                        <Visual />
+                      </TiltCard>
                     </div>
                   </motion.div>
 
@@ -164,6 +194,12 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         className="relative glass-strong rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
       >
+        {/* Accent glow header */}
+        <div
+          className="absolute top-0 left-0 right-0 h-32 rounded-t-2xl pointer-events-none opacity-30"
+          style={{ background: `radial-gradient(ellipse at top, ${project.accent}30, transparent 70%)` }}
+        />
+
         {/* Header */}
         <div className="sticky top-0 glass-strong px-6 py-4 flex items-center justify-between border-b border-white/5 z-10">
           <div>

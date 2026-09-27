@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from 'framer-motion';
+import { useRef, useState } from 'react';
 import { Camera, Users, Activity, AlertTriangle } from 'lucide-react';
 
 export default function MediQVisual() {
@@ -137,7 +137,6 @@ export default function MediQVisual() {
             <span className="text-[9px] font-medium text-gray-300">Detected</span>
           </div>
           <div className="text-2xl font-bold text-gradient-indigo font-mono">
-            <motion.span>{Math.round(0)}</motion.span>
             <CounterDisplay progress={counterValue} />
           </div>
         </motion.div>
@@ -180,10 +179,8 @@ export default function MediQVisual() {
   );
 }
 
-function CounterDisplay({ progress }: { progress: ReturnType<typeof useTransform> }) {
-  return (
-    <motion.span>
-      {useTransform(progress, (v) => Math.round(v))}
-    </motion.span>
-  );
+function CounterDisplay({ progress }: { progress: MotionValue<number> }) {
+  const [count, setCount] = useState(0);
+  useMotionValueEvent(progress, 'change', (v) => setCount(Math.round(v)));
+  return <span>{count}</span>;
 }
