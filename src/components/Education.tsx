@@ -33,7 +33,7 @@ export default function Education() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-3xl md:text-4xl lg:text-5xl font-bold"
           >
-            <span className="text-gradient">Education</span>
+            <span className="text-gradient-animated">Education</span>
           </motion.h2>
         </div>
 
@@ -81,7 +81,7 @@ export default function Education() {
                 <div className={`w-full md:w-1/2 pl-14 md:pl-0 ${isLeft ? 'md:pr-10 md:text-right' : 'md:pl-10'}`}>
                   <motion.div
                     whileHover={{ y: -3 }}
-                    className="glass rounded-xl p-4 md:p-5"
+                    className="glass border-animated rounded-xl p-4 md:p-5"
                   >
                     <div className={`flex items-center gap-2 mb-2 ${isLeft ? 'md:justify-end' : ''}`}>
                       <span className="text-xs font-mono text-indigo-300 px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-400/20">

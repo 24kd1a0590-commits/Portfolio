@@ -35,7 +35,7 @@ export default function ProblemSolving() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-3xl md:text-4xl lg:text-5xl font-bold"
           >
-            How I <span className="text-gradient">Think.</span>
+            How I <span className="text-gradient-animated">Think.</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}

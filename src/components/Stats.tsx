@@ -17,7 +17,7 @@ export default function Stats() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -4 }}
-              className="group relative glass rounded-2xl p-5 md:p-6 text-center overflow-hidden"
+              className="group relative glass border-animated rounded-2xl p-5 md:p-6 text-center overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative">

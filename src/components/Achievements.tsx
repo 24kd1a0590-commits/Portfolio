@@ -38,7 +38,7 @@ export default function Achievements() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-3xl md:text-4xl lg:text-5xl font-bold"
           >
-            <span className="text-gradient">Recognition</span>
+            <span className="text-gradient-animated">Recognition</span>
           </motion.h2>
         </div>
 
@@ -85,7 +85,7 @@ export default function Achievements() {
                 <div className={`w-full md:w-1/2 pl-16 md:pl-0 ${isLeft ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
                   <motion.div
                     whileHover={{ y: -4 }}
-                    className={`glass rounded-2xl p-5 md:p-6 ${
+                    className={`glass border-animated rounded-2xl p-5 md:p-6 ${
                       ach.isHighlight ? 'border-amber-400/20 shadow-lg shadow-amber-500/5' : ''
                     }`}
                   >

@@ -37,7 +37,7 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6"
           >
-            More Than Just <span className="text-gradient">Code.</span>
+            More Than Just <span className="text-gradient-animated">Code.</span>
           </motion.h2>
 
           <motion.p

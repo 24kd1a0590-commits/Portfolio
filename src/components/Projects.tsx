@@ -66,7 +66,7 @@ export default function Projects() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-3xl md:text-4xl lg:text-5xl font-bold"
           >
-            Selected <span className="text-gradient">Work</span>
+            Selected <span className="text-gradient-animated">Work</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}

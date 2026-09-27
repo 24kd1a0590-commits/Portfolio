@@ -80,7 +80,7 @@ export default function Hero() {
               Building practical
               <br />
               software, one{' '}
-              <span className="text-gradient">problem</span>
+              <span className="text-gradient-animated glow-text">problem</span>
               <br />
               at a time.
             </motion.h1>

@@ -93,9 +93,9 @@ export default function Navbar() {
         </div>
 
         {/* Scroll progress bar */}
-        <div className="h-px bg-transparent overflow-hidden">
+        <div className="h-[3px] bg-transparent overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-indigo-500 via-indigo-400 to-cyan-400 transition-all duration-100"
+            className="h-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-indigo-500 transition-all duration-100 shadow-[0_0_10px_rgba(99,102,241,0.5)]"
             style={{ width: `${progress * 100}%` }}
           />
         </div>

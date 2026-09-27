@@ -62,7 +62,7 @@ export default function Certifications() {
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ y: -6 }}
-                className={`group relative glass rounded-2xl p-5 md:p-6 overflow-hidden border ${cert.border} transition-all duration-500`}
+                className={`group relative glass border-animated rounded-2xl p-5 md:p-6 overflow-hidden border ${cert.border} transition-all duration-500`}
               >
                 {/* Gradient glow */}
                 <div className={`absolute -top-16 -right-16 w-32 h-32 bg-gradient-to-br ${cert.gradient} rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />

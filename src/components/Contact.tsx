@@ -88,7 +88,7 @@ export default function Contact() {
           >
             Let's Build Something
             <br />
-            <span className="text-gradient">Meaningful.</span>
+            <span className="text-gradient-animated">Meaningful.</span>
           </motion.h2>
 
           <motion.p
